@@ -13,14 +13,30 @@ public class ExploreMoreApplication {
 
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(ExploreMoreApplication.class, args);
-        PackageRepository pacrepo = context.getBean(PackageRepository.class);
+//        PackageRepository pacrepo = context.getBean(PackageRepository.class);
+//
+//        Package p = new Package();
+//        p.setPrice(100);
+//        p.setDuration("10");
+//        p.setAvailability(10);
+//        p.setName("test");
+//        pacrepo.save(p);
 
-        Package p = new Package();
-        p.setPrice(10000);
-        p.setDuration("12");
-        p.setAvailability(7);
-        p.setName("Manali");
-        pacrepo.save(p);
+
+
+//        UserRepository user = context.getBean(UserRepository.class);
+//
+//        User u = new User();
+//        u.setEmail("rich@gmail.com");
+//        u.setFirstName("Rich");
+//        u.setLastName("Amrutiya");
+//        u.setUserName("Rich-Amrutiya");
+//        u.setPhoneNo("6353249404");
+//        u.setPassword("Rich101b");
+//        user.save(u);
+
+
+=======
     }
 
 }
