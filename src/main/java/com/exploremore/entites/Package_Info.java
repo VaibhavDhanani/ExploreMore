@@ -13,5 +13,8 @@ public class Package_Info {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id ;
 
+    private int day ;
+
+
 
 }
