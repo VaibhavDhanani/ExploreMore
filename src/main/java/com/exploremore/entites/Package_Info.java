@@ -1,20 +1,24 @@
-package com.exploremore.entites;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import org.springframework.aot.generate.GeneratedTypeReference;
-
-@Entity
-public class Package_Info {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id ;
-
-    private int day ;
-
-
-
-}
+//package com.exploremore.entites;
+//
+//import jakarta.persistence.*;
+//import org.springframework.aot.generate.GeneratedTypeReference;
+//
+//@Entity
+//public class Package_Info {
+//
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "id")
+//    private Package pack ;
+//
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "h_id")
+//    private Hotel hotel ;
+//
+//
+//    private int day ;
+//
+//    private String description ;
+//
+//
+//
+//}
