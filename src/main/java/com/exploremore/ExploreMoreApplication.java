@@ -15,12 +15,12 @@ public class ExploreMoreApplication {
         ApplicationContext context = SpringApplication.run(ExploreMoreApplication.class, args);
         PackageRepository pacrepo = context.getBean(PackageRepository.class);
 
-//        Package p = new Package();
-//        p.setPrice(100);
-//        p.setDuration("10");
-//        p.setAvailability(10);
-//        p.setName("test");
-//        pacrepo.save(p);
+        Package p = new Package();
+        p.setPrice(10000);
+        p.setDuration("12");
+        p.setAvailability(7);
+        p.setName("Manali");
+        pacrepo.save(p);
     }
 
 }
