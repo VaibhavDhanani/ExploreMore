@@ -28,6 +28,15 @@ public class User {
         this.phoneNo = phoneNo;
     }
 
+    public User(String firstName, String lastName, String userName, String email, String password, String phoneNo) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+        this.phoneNo = phoneNo;
+    }
+
     public User() {
     }
     public int getId() {
