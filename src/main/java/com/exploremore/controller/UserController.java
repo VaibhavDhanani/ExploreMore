@@ -26,7 +26,7 @@ public class UserController {
     @GetMapping("/{id}")
     public User user_by_id(@PathVariable int id)
     {
-        if(id <= 0 || id >= userRepo.findAll().size())
+        if(userRepo.findById(id).isEmpty())
         {
             throw new BadRequestException("No Such User Found");
         }
@@ -43,30 +43,17 @@ public class UserController {
     @PutMapping("/update/{id}")
     public User updateUser(@PathVariable int id, @RequestBody User user)
     {
-        if(id <= 0 || id >= userRepo.findAll().size())
+        if(userRepo.findById(id).isEmpty())
         {
             throw new BadRequestException("No Such User Found");
         }
-        Optional<User> optionalUser = userRepo.findById(id);
-        if (optionalUser.isPresent()) {
-            User user1 = optionalUser.get();
-            user1.setFirstName(user.getFirstName());
-            user1.setLastName(user.getLastName());
-            user1.setUserName(user.getUserName());
-            user1.setEmail(user.getEmail());
-            user1.setPassword(user.getPassword());
-            user1.setPhoneNo(user.getPhoneNo());
-            userRepo.save(user1);
-            return user1;
-        } else {
-            return null;
-        }
+        return userRepo.save(user);
     }
 
     @DeleteMapping("/delete/{id}")
     public void deleteUser(@PathVariable int id)
     {
-        if(id <= 0 || id >= userRepo.findAll().size())
+        if(userRepo.findById(id).isEmpty())
         {
             throw new BadRequestException("No Such User Found");
         }

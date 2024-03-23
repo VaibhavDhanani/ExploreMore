@@ -2,6 +2,7 @@ package com.exploremore.controller;
 
 import com.exploremore.dao.PackageRepository;
 import com.exploremore.entites.Package;
+import com.exploremore.exception.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,9 @@ public class PackageController {
 
     @GetMapping("/{id}")
     public Package packageById(@PathVariable int id) {
+        if (pacRepo.findById(id).isEmpty()) {
+            throw new BadRequestException("No Such Package Found");
+        }
         Optional<Package> optionalUser = pacRepo.findById(id);
         return optionalUser.orElse(null);
     }
@@ -33,22 +37,18 @@ public class PackageController {
 
     @PutMapping("/update/{id}")
     public Package updatePackage(@PathVariable int id, @RequestBody Package pac) {
-        Optional<Package> optionalUser = pacRepo.findById(id);
-        if (optionalUser.isPresent()) {
-            Package p = optionalUser.get();
-            p.setName(pac.getName());
-            p.setDuration(pac.getDuration());
-            p.setPrice(pac.getPrice());
-            p.setAvailability(pac.getAvailability());
-            return pacRepo.save(p);
-        } else {
-            return null;
+        if (pacRepo.findById(id).isEmpty()) {
+            throw new BadRequestException("No Such Package Found");
         }
+        return pacRepo.save(pac);
     }
 
 
     @DeleteMapping("/delete/{id}")
     public void deletePackage(@PathVariable int id) {
+        if (pacRepo.findById(id).isEmpty()) {
+            throw new BadRequestException("No Such Package Found");
+        }
         pacRepo.deleteById(id);
     }
 }
