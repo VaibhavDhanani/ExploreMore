@@ -125,7 +125,7 @@ public class InformationController {
         {
             throw new NoElementFoundException("No Such Package Found");
         }
-        infoRepo.deleteById(id)
+        infoRepo.deleteById(id);
     }
 
 }
