@@ -1,55 +1,65 @@
 package com.exploremore.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-import javax.sql.DataSource;
-
 @Configuration
-@EnableMethodSecurity()
+@EnableWebSecurity
 public class SecurityConfig {
 
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-    @Bean
-    public UserDetailsService userDetailsService() {
+	@Autowired
+	private UserDetailsService userDetailsService;
 
-        UserDetails user = User.withUsername("user")
-                .password("password")
-                .roles("USER")
-                .build();
+//
+	@Bean
+	public AuthenticationProvider authProvider() {
+		DaoAuthenticationProvider provider=new DaoAuthenticationProvider();
+		provider.setUserDetailsService(userDetailsService);
+		provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
+		return provider;
 
-        UserDetails admin = User.withUsername("admin")
-                .password("password")
-                .roles("ADMIN")
-                .build();
+	}
+	
+	
+	
+	
+	
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        return new InMemoryUserDetailsManager(user, admin);
-    }
+		http.csrf(customizer -> customizer.disable())
+				.authorizeHttpRequests(request -> request.anyRequest().authenticated())
+				.httpBasic(Customizer.withDefaults())
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests().anyRequest().authenticated();
-        http.httpBasic(Customizer.withDefaults());
-        http.csrf(csrf -> csrf.disable());
-        http.formLogin();
+		return http.build();
+	}
+	
+	
+	
+	
+	
 
-        return http.build();
-    }
+//	  @Bean
+//	  public UserDetailsService userDetailsService() {
+//	 UserDetails user= User.withDefaultPasswordEncoder() .username("Vaibhav")
+//	  .password("v@123") .roles("USER") .build();
+//
+//	 UserDetails admin=User .withDefaultPasswordEncoder() .username("Rich")
+//	 .password("admin") .roles("ADMIN") .build();
+//
+//	 return new InMemoryUserDetailsManager(user,admin); }
 
+	
+	
 }
