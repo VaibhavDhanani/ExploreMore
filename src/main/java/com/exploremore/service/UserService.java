@@ -11,12 +11,11 @@ import com.exploremore.entites.User;
 @Service
 public class UserService {
 
-
     @Autowired
-    UserRepository repo;
+    private UserRepository repo;
 
-private BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder(12);
-    public User saveUser(User user) {
+private final BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder(10);
+    public User save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         System.out.println("+\n\n\n\n\n+"+user.getPassword()+"+\n\n\n\n\n+");
         return repo.save(user);

@@ -1,76 +1,30 @@
 package com.exploremore.entites;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Hotel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(length = 25,nullable = false,name = "name")
     private String name;
-
+    @Column(length = 7,nullable = false,name = "price")
     private double price;
 
+    @Column(length = 4,nullable = false,name = "availability")
     private int availability;
 
+    @Column(length = 4,nullable = false,name = "ratings")
     private double ratings;
-
-    public Hotel(int id, String name, double price, int availability, double ratings) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.availability = availability;
-        this.ratings = ratings;
-    }
-
-    public Hotel() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public int getAvailability() {
-        return availability;
-    }
-
-    public void setAvailability(int availability) {
-        this.availability = availability;
-    }
-
-    public double getRatings() {
-        return ratings;
-    }
-
-    public void setRatings(double ratings) {
-        this.ratings = ratings;
-    }
-
     @Override
     public String toString() {
         return "Hotel{" +

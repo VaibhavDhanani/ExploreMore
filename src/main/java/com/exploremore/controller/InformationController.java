@@ -4,8 +4,9 @@ import com.exploremore.dao.HotelRepository;
 import com.exploremore.dao.InformationRepository;
 import com.exploremore.entites.Hotel;
 import com.exploremore.entites.Package;
-import com.exploremore.entites.Package_Info;
+import com.exploremore.entites.PackageInformation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -21,18 +22,20 @@ public class InformationController {
     @Autowired
     private HotelRepository hotelRepo;
 
-    @RequestMapping("/all")
-    public List<Package_Info> all()
+    @GetMapping("/all")
+    @PreAuthorize("hasAnyRole('MANAGER','USER','ADMIN')")
+    public List<PackageInformation> all()
     {
         return infoRepo.findAll();
     }
 
     @GetMapping("/package/{id}")
-    public List<Package_Info> package_by_id(@PathVariable long id)
+    @PreAuthorize("hasAnyRole('MANAGER','USER','ADMIN')")
+    public List<PackageInformation> package_by_id(@PathVariable long id)
     {
-        List<Package_Info> list = infoRepo.findAll();
-        List<Package_Info> packages = new ArrayList<>();
-        for(Package_Info info : list) {
+        List<PackageInformation> list = infoRepo.findAll();
+        List<PackageInformation> packages = new ArrayList<>();
+        for(PackageInformation info : list) {
             if(info.getPack().getId() == id) {
                 packages.add(info);
             }
@@ -41,10 +44,11 @@ public class InformationController {
     }
 
     @GetMapping("/package/{id}/hotels")
+    @PreAuthorize("hasAnyRole('MANAGER','USER','ADMIN')")
     public List<Hotel> hotelsByPackageId(@PathVariable long id) {
-        List<Package_Info> list = infoRepo.findAll();
+        List<PackageInformation> list = infoRepo.findAll();
         List<Hotel> hotels = new ArrayList<>();
-        for(Package_Info info : list) {
+        for(PackageInformation info : list) {
             if(info.getPack().getId() == id) {
                 hotels.add(info.getHotel());
             }
@@ -52,18 +56,16 @@ public class InformationController {
         return hotels;
     }
 
-    @GetMapping("/hotel/{id}/packges")
+    @GetMapping("/hotel/{id}/packages")
+    @PreAuthorize("hasAnyRole('MANAGER','USER','ADMIN')")
     public List<Package> packagesByHotelId(@PathVariable long id) {
-        List<Package_Info> list = infoRepo.findAll();
+        List<PackageInformation> list = infoRepo.findAll();
         List<Package> packages = new ArrayList<>();
-        for(Package_Info info : list) {
+        for(PackageInformation info : list) {
             if(info.getHotel().getId() == id) {
                 packages.add(info.getPack());
             }
         }
         return packages;
     }
-
-
-
 }

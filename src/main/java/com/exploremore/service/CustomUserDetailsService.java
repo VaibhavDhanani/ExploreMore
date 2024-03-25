@@ -6,21 +6,18 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import com.exploremore.dao.UserRepository;
 import com.exploremore.entites.User;
-import com.exploremore.entites.UserPrincipal;
-import com.exploremore.exception.BadRequestException;
+import com.exploremore.exception.NoElementFoundException;
 
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-
     @Autowired
     private UserRepository userRepository;
-    
     @Override
-    public UserDetails loadUserByUsername(String username) throws BadRequestException {
+    public UserDetails loadUserByUsername(String username) throws NoElementFoundException {
         User user = userRepository.findByUserName(username);
         if (user == null) {
-            throw new BadRequestException("User not found with username: " + username);
+            throw new NoElementFoundException("User not found with username: " + username);
         }
         return new UserPrincipal(user);
     }

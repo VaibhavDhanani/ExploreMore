@@ -1,70 +1,28 @@
 package com.exploremore.entites;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Package {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "name", nullable = false, unique = true, length = 20)
     private String name;
-    private String duration;
 
+    @Column(name = "duration", nullable = false, length = 4)
+    private int duration;
+
+    @Column(name = "price", nullable = false,length = 10)
     private double price;
 
+    @Column(name = "availability", nullable = false,length=5)
     private int availability;
 
-    public Package(Long id, String name, String duration, double price, int availability) {
-        this.id = id;
-        this.name = name;
-        this.duration = duration;
-        this.price = price;
-        this.availability = availability;
-    }
-
-    public Package() {
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDuration() {
-        return duration;
-    }
-
-    public void setDuration(String duration) {
-        this.duration = duration;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public int getAvailability() {
-        return availability;
-    }
-
-    public void setAvailability(int availability) {
-        this.availability = availability;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
 }

@@ -1,102 +1,60 @@
 package com.exploremore.entites;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
+    @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
+
+    @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
+
+    @Column(name = "username", nullable = false, unique = true, length = 50)
     private String userName;
+
+    @Column(name = "email", nullable = false, unique = true, length = 50)
     private String email;
+
+    @Column(name = "password", nullable = false, length = 255)
     private String password;
+
+    @Column(name = "phone_no", nullable = false, unique = true, length = 10)
     private String phoneNo;
+
+    @Column(name = "role", nullable = false, length = 10)
     private String role;
 
-    public User(int id, String firstName, String lastName, String userName, String email, String password, String phoneNo, String role) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-        this.phoneNo = phoneNo;
-        this.role = role;
+    public enum UserRole {
+        USER,
+        ADMIN,
+        MANAGER
     }
-
-    public User() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPhoneNo() {
-        return phoneNo;
-    }
-
-    public void setPhoneNo(String phoneNo) {
-        this.phoneNo = phoneNo;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
     public void setRole(String role) {
+        if (!isValidRole(role)) {
+            throw new IllegalArgumentException("Invalid role: " + role);
+        }
         this.role = role;
     }
 
+    private boolean isValidRole(String role) {
+        for (UserRole userRole : UserRole.values()) {
+            if (userRole.name().equals(role)) {
+                return true;
+            }
+        }
+        return false;
+    }
     @Override
     public String toString() {
         return "User{" +

@@ -1,8 +1,8 @@
 package com.exploremore.dao;
 
-import com.exploremore.entites.Package_Info;
+import com.exploremore.entites.PackageInformation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface InformationRepository extends JpaRepository<Package_Info, Long> {
+public interface InformationRepository extends JpaRepository<PackageInformation, Long> {
 
 }

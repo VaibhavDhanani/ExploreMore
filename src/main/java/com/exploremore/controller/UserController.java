@@ -2,9 +2,10 @@ package com.exploremore.controller;
 
 import com.exploremore.dao.UserRepository;
 import com.exploremore.entites.User;
-import com.exploremore.exception.BadRequestException;
+import com.exploremore.exception.NoElementFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class UserController {
     private UserRepository userRepo ;
 
     @GetMapping("/all")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @ResponseBody
     public List<User> all()
     {
@@ -26,39 +27,44 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('MANAGER')")
-    public User user_by_id(@PathVariable int id)
+    @PreAuthorize("hasAnyRole('MANAGER','USER','ADMIN')")
+    public User userById(@PathVariable Long id)
     {
         if(userRepo.findById(id).isEmpty())
         {
-            throw new BadRequestException("No Such User Found");
+            throw new NoElementFoundException("No Such User Found");
         }
         Optional<User> optionalUser = userRepo.findById(id);
         return optionalUser.orElse(null);
     }
     @PostMapping("/add")
+    @PreAuthorize("hasAnyRole('MANAGER','USER','ADMIN')")
     public User addUser(@RequestBody User user)
     {
+        BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder(10);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
         return user;
     }
 
     @PutMapping("/update/{id}")
-    public User updateUser(@PathVariable int id, @RequestBody User user)
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public User updateUser(@PathVariable Long id, @RequestBody User user)
     {
         if(userRepo.findById(id).isEmpty())
         {
-            throw new BadRequestException("No Such User Found");
+            throw new NoElementFoundException("No Such User Found");
         }
         return userRepo.save(user);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteUser(@PathVariable int id)
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public void deleteUser(@PathVariable Long id)
     {
         if(userRepo.findById(id).isEmpty())
         {
-            throw new BadRequestException("No Such User Found");
+            throw new NoElementFoundException("No Such User Found");
         }
         userRepo.deleteById(id);
     }

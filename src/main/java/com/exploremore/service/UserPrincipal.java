@@ -1,17 +1,20 @@
-package com.exploremore.entites;
+package com.exploremore.service;
 
+import java.io.Serial;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.exploremore.entites.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserPrincipal implements UserDetails {
-    private static final long serialVersionUID = 1L;
+    @Serial
+	private static final long serialVersionUID = 1L;
 
 	
-	private User user;
+	private final User user;
 
 	public UserPrincipal(User user) {
         this.user=user;
@@ -19,8 +22,7 @@ public class UserPrincipal implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-	
-		return Collections.singleton(new SimpleGrantedAuthority("USER"));
+		return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
 	}
 
 	@Override
