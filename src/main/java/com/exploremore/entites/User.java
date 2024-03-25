@@ -4,21 +4,22 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.NoArgsConstructor;
 
 @Entity
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private String firstName;
     private String lastName;
     private String userName;
     private String email;
     private String password;
     private String phoneNo;
+    private String role;
 
-    public User(int id, String firstName, String lastName, String userName, String email, String password, String phoneNo) {
+    public User(int id, String firstName, String lastName, String userName, String email, String password, String phoneNo, String role) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -26,19 +27,12 @@ public class User {
         this.email = email;
         this.password = password;
         this.phoneNo = phoneNo;
-    }
-
-    public User(String firstName, String lastName, String userName, String email, String password, String phoneNo) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-        this.phoneNo = phoneNo;
+        this.role = role;
     }
 
     public User() {
     }
+
     public int getId() {
         return id;
     }
@@ -95,6 +89,14 @@ public class User {
         this.phoneNo = phoneNo;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -105,6 +107,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", phoneNo='" + phoneNo + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
 }

@@ -4,6 +4,7 @@ import com.exploremore.dao.UserRepository;
 import com.exploremore.entites.User;
 import com.exploremore.exception.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class UserController {
     private UserRepository userRepo ;
 
     @GetMapping("/all")
+    @PreAuthorize("hasRole('USER')")
     @ResponseBody
     public List<User> all()
     {
@@ -24,6 +26,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('MANAGER')")
     public User user_by_id(@PathVariable int id)
     {
         if(userRepo.findById(id).isEmpty())
